@@ -1,0 +1,1 @@
+web: gunicorn Aaarohan_Backend.wsgi --log-file -
