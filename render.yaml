@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: sai-fitness-backend
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn Aaarohan_Backend.wsgi:application
+    envVars:
+      - key: DEBUG
+        value: False
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    autoDeploy: true
+
+databases:
+  - name: sai-fitness-db
+    plan: free
+    region: oregon

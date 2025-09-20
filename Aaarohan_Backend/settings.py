@@ -196,8 +196,22 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
-# Azure App Service specific settings
-if 'WEBSITE_HOSTNAME' in os.environ:
+# Render specific settings
+if 'RENDER' in os.environ:
+    # Running on Render
+    ALLOWED_HOSTS.append(os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'localhost'))
+    
+    # Render provides HTTPS by default
+    SECURE_SSL_REDIRECT = True
+    
+    # Database configuration for Render
+    if 'DATABASE_URL' in os.environ:
+        DATABASES = {
+            'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
+        }
+
+# Azure App Service specific settings  
+elif 'WEBSITE_HOSTNAME' in os.environ:
     # Running on Azure
     ALLOWED_HOSTS.append(os.environ['WEBSITE_HOSTNAME'])
     
