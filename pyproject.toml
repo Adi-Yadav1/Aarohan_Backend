@@ -1,0 +1,11 @@
+# Build configuration for Azure App Service
+# This file is automatically used by Azure during deployment
+
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[tool.setuptools]
+packages = []
+
+# Azure will automatically install packages from requirements.txt
+# and run the startup command specified in the portal

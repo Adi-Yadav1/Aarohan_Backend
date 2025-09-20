@@ -195,3 +195,34 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Azure App Service specific settings
+if 'WEBSITE_HOSTNAME' in os.environ:
+    # Running on Azure
+    ALLOWED_HOSTS.append(os.environ['WEBSITE_HOSTNAME'])
+    
+    # Azure provides HTTPS by default
+    SECURE_SSL_REDIRECT = True
+    
+    # Logging configuration for Azure
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'verbose': {
+                'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+                'style': '{',
+            },
+        },
+        'handlers': {
+            'azure': {
+                'level': 'INFO',
+                'class': 'logging.StreamHandler',
+                'formatter': 'verbose',
+            },
+        },
+        'root': {
+            'handlers': ['azure'],
+            'level': 'INFO',
+        },
+    }
